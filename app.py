@@ -20,5 +20,22 @@ def home():
         return redirect("/")
     return render_template("index.html", submissions=submissions)
 
+
+@app.route('/delete/<int:idx>', methods=['POST'])
+def delete_submission(idx: int):
+    """Delete a submission by index and redirect to home.
+
+    This uses the in-memory `submissions` list. Deletion is best-effort
+    (out-of-range indexes are ignored).
+    """
+    global submissions
+    try:
+        # remove the item at the given index
+        del submissions[idx]
+    except Exception:
+        # ignore invalid indexes
+        pass
+    return redirect('/')
+
 if __name__ == "__main__":
     app.run(debug=True)
